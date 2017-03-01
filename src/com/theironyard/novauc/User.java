@@ -5,10 +5,18 @@ import java.util.ArrayList;
 
 public class User {
     private String nombre;
-    //private ArrayList<Message> message = new ArrayList<>();
+    private ArrayList vectorCatalog = new ArrayList<>();
 
-    public User(String nombre, ArrayList message) {
+    public User(String nombre, ArrayList vectorCatalog) {
         this.nombre = nombre;
-        //this.message = message;
+        this.vectorCatalog = vectorCatalog;
+    }
+
+    public ArrayList getVectorCatalog() {
+        return vectorCatalog;
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 }
