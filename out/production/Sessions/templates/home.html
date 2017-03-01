@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rettiwT home</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <nav>
+        <ul class="nav">
+            <li>
+                <a title="home" href="home.html">Home</a>
+            </li>
+            <li>
+                <a title="logout" href="logout.html">Logout</a>
+            </li>
+            <li>
+                <a title="viewAll" href="viewall.html">View All</a>
+            </li>
+        </ul>
+    </nav>
+    <form action="/add" method ="post">
+        <input type="text" placeholder="Message:" name="message"/>
+        <button type="submit">Add!</button>
+    </form>
+
+    <h1>Your Post</h1>
+        <ol>
+            {{#post}}
+                <li>
+                    <p>
+                        {{.}}
+                     </p>
+                    <span class="post-button">
+                    <form action="/delete" method="post">
+                        <input type="hidden" name="post" value="{{.}}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/edit" method="post">
+                        <input type="hidden" name="oldPost" value="{{.}}">
+                        <input type="text" name="editPost" placeholder="{{.}}">
+                        <button type="submit">Edit</button>
+                    </form>
+
+                        </span>
+                    <hr/>
+            </li>
+            {{/post}}
+        </ol>
+    <!--
+    <h1>Your post</h1>
+    <p>{{{post}}}</p>
+    -->
+</body>
+</html>
