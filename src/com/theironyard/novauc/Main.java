@@ -25,24 +25,22 @@ public class Main {
                     if(!userAccess.containsKey(name)) {
                         return new ModelAndView(hashLocal, "index.html");
                     } else {
-                        //hashLocal.put("name", user.getName());
                         hashLocal.put("aVector", userAccess.get(name).aVector);
                         return new ModelAndView(hashLocal, "messages.html");
                     }
                 }),
                 new MustacheTemplateEngine()
-
         );
 
         Spark.post("/create-user", ((request, response) -> {
                     System.out.println("accessed create user");
                     String nomDeGuerre = request.queryParams("createUser");
-                    String passwordz = request.queryParams("createPassword");
+                    String password = request.queryParams("createPassword");
 
                     Session session = request.session();
                     session.attribute("userName", nomDeGuerre);
 
-                    userAccess.put(nomDeGuerre, new User(nomDeGuerre, passwordz));
+                    userAccess.put(nomDeGuerre, new User(nomDeGuerre, password));
                     response.redirect("/");
                     return "";
                 })
@@ -58,5 +56,12 @@ public class Main {
                     return "";
                 }))
         );
+
+        Spark.post("/logout", ((request, response) -> {
+            Session session = request.session();
+            session.invalidate();
+            response.redirect("/");
+            return "";
+        }));
     }
 }
