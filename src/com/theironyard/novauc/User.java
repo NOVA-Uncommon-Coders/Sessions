@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class User {
 
-    private String nombre;
+    private String name;
     ArrayList<String> aVector = new ArrayList<>();
 
-    public User(String nombre) {
-        this.nombre = nombre;
+    public User(String name) {
+        this.name = name;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
 }

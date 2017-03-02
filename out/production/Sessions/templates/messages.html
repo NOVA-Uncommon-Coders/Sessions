@@ -1,11 +1,12 @@
 <html>
 <body>
-<form action="/login" method="post">
-
-</form>
-
-<form action="/logout" method="post">
-    <button type="submit">Lumberout</button>
+{{nombre}}
+<form action="/create-message" method="post">
+    <input type="text" placeholder="express your feelings" name="createMessage"/>
+    <button type="submit">Submit</button>
+    {{#aVector}}
+    <p>{{.}}</p>
+    {{/aVector}}
 </form>
 </body>
 </html>

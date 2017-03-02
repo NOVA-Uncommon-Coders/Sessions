@@ -1,6 +1,7 @@
 package com.theironyard.novauc;
 
 import spark.ModelAndView;
+import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -9,20 +10,23 @@ import java.util.HashMap;
 public class Main {
 
     static User user;
+    public static HashMap<String, User> userAccess = new HashMap<>();
 
     public static void main(String[] args) {
 
         Spark.init();
 
         Spark.get("/", ((request, response) -> {
-                    HashMap hashBrowns = new HashMap();
+                    Session session = request.session();
+                    session.attribute("userName");
+                    HashMap hashLocal = new HashMap();
                     System.out.println("fresh page");
                     if(user == null) {
-                        return new ModelAndView(hashBrowns, "index.html");
+                        return new ModelAndView(hashLocal, "index.html");
                     } else {
-                        hashBrowns.put("nombre", user.getNombre());
-                        hashBrowns.put("aVector", user.aVector);
-                        return new ModelAndView(hashBrowns, "messages.html");
+                        hashLocal.put("name", user.getName());
+                        hashLocal.put("aVector", user.aVector);
+                        return new ModelAndView(hashLocal, "messages.html");
                     }
                 }),
                 new MustacheTemplateEngine()
@@ -30,16 +34,22 @@ public class Main {
         );
 
         Spark.post("/create-user", ((request, response) -> {
-                    //System.out.println("accessed create user");
+                    System.out.println("accessed create user");
                     String nomDeGuerre = request.queryParams("createUser");
-                    user = new User(nomDeGuerre);
+
+                    Session session = request.session();
+                    session.attribute("userName", nomDeGuerre);
+
+                    userAccess.put(nomDeGuerre, new User(nomDeGuerre));
                     response.redirect("/");
                     return "";
                 })
         );
 
         Spark.post("/create-message", (((request, response) -> {
-                    //System.out.println("accessed create message");
+                    Session session = request.session();
+                    session.attribute("userName");
+                    System.out.println("accessed create message");
                     String handwritten = request.queryParams("createMessage");
                     user.aVector.add(handwritten);
                     response.redirect("/");
