@@ -7,7 +7,7 @@ public class User {
 
     private String name;
     private String password;
-    ArrayList<String> aVector = new ArrayList<>();
+    private ArrayList<String> aVector = new ArrayList<>();
 
     public User(String name, String password) {
         this.name = name;
@@ -20,6 +20,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public ArrayList getAvector() {
+        return aVector;
     }
 
 }
