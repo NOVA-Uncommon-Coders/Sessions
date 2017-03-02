@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 public class Main {
 
-    static User user;
     public static HashMap<String, User> userAccess = new HashMap<>();
 
     public static void main(String[] args) {
@@ -18,14 +17,16 @@ public class Main {
 
         Spark.get("/", ((request, response) -> {
                     Session session = request.session();
-                    session.attribute("userName");
+                    String name = session.attribute("userName");
                     HashMap hashLocal = new HashMap();
+
+
                     System.out.println("fresh page");
-                    if(user == null) {
+                    if(!userAccess.containsKey(name)) {
                         return new ModelAndView(hashLocal, "index.html");
                     } else {
-                        hashLocal.put("name", user.getName());
-                        hashLocal.put("aVector", user.aVector);
+                        //hashLocal.put("name", user.getName());
+                        hashLocal.put("aVector", userAccess.get(name).aVector);
                         return new ModelAndView(hashLocal, "messages.html");
                     }
                 }),
@@ -36,11 +37,12 @@ public class Main {
         Spark.post("/create-user", ((request, response) -> {
                     System.out.println("accessed create user");
                     String nomDeGuerre = request.queryParams("createUser");
+                    String passwordz = request.queryParams("createPassword");
 
                     Session session = request.session();
                     session.attribute("userName", nomDeGuerre);
 
-                    userAccess.put(nomDeGuerre, new User(nomDeGuerre));
+                    userAccess.put(nomDeGuerre, new User(nomDeGuerre, passwordz));
                     response.redirect("/");
                     return "";
                 })
@@ -48,10 +50,10 @@ public class Main {
 
         Spark.post("/create-message", (((request, response) -> {
                     Session session = request.session();
-                    session.attribute("userName");
+                    String name = session.attribute("userName");
                     System.out.println("accessed create message");
                     String handwritten = request.queryParams("createMessage");
-                    user.aVector.add(handwritten);
+                    userAccess.get(name).aVector.add(handwritten);
                     response.redirect("/");
                     return "";
                 }))
