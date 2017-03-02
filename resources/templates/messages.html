@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html>
 <body>
-
+{{nombre}}
+<form action="/create-message" method="post">
+    <input type="text" placeholder="express your feelings" name="createMessage"/>
+    <button type="submit">Submit</button>
+    {{#aVector}}
+    <p>{{.}}</p>
+    {{/aVector}}
+</form>
 </body>
 </html>

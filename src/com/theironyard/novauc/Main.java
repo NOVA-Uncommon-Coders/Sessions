@@ -1,7 +1,6 @@
 package com.theironyard.novauc;
 
 import spark.ModelAndView;
-import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
@@ -9,48 +8,43 @@ import java.util.HashMap;
 
 public class Main {
 
-    public static HashMap<String, User> globalGps = new HashMap<>();
-    public static User usage;
+    static User user;
 
     public static void main(String[] args) {
 
         Spark.init();
 
         Spark.get("/", ((request, response) -> {
-            Session saison = request.session();
-            String nombre = saison.attribute("userName");
-            User user1 = globalGps.get(nombre);
-
-            HashMap localGps = new HashMap();
-            if (user1 == null) {
-                return new ModelAndView(localGps, "index.html");
-            }
-            else {
-                return new ModelAndView(user1, "messages.html");
-            }
+                    HashMap hashBrowns = new HashMap();
+                    System.out.println("fresh page");
+                    if(user == null) {
+                        return new ModelAndView(hashBrowns, "index.html");
+                    } else {
+                        hashBrowns.put("nombre", user.getNombre());
+                        hashBrowns.put("aVector", user.aVector);
+                        return new ModelAndView(hashBrowns, "messages.html");
+                    }
                 }),
                 new MustacheTemplateEngine()
+
         );
 
         Spark.post("/create-user", ((request, response) -> {
-            String nom = request.queryParams("loginName");
-            User user2 = globalGps.get(nom);
-            if (user2 == null) {
-                user2 = new User(nom, usage.getVectorCatalog());
-                globalGps.put(nom, user2);
-            }
-
-            Session season = request.session();
-            season.attribute("userName", nom);
-
-            response.redirect("/");
-            return "";
-        })
+                    //System.out.println("accessed create user");
+                    String nomDeGuerre = request.queryParams("createUser");
+                    user = new User(nomDeGuerre);
+                    response.redirect("/");
+                    return "";
+                })
         );
 
-        //Spark.post("/create-message");
-        //Spark.post("/delete-message");
-        //Spark.post("/edit-message");
-
+        Spark.post("/create-message", (((request, response) -> {
+                    //System.out.println("accessed create message");
+                    String handwritten = request.queryParams("createMessage");
+                    user.aVector.add(handwritten);
+                    response.redirect("/");
+                    return "";
+                }))
+        );
     }
 }
