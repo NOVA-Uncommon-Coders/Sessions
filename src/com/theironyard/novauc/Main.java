@@ -72,7 +72,7 @@ public class Main {
                         post += String.format("<hr/><h4>Post by: <b>%s</b></h4>", user.getName());
                         int i = 1;
                         for(String message: user.getPosts()){
-                            post+= String.format("<p>%s] %s</p>",i ,message );
+                            post+= String.format("<p>%s. %s</p>",i ,message );
                             i++;
                         }
                     }
@@ -138,9 +138,7 @@ public class Main {
                         response.redirect("/home.html");
                     } else {
                         userAccounts.get(loginName).getPosts().add(post);
-                        System.out.println("Made it this far");
                         jasonWrite();
-                        System.out.println("Even further");
                         response.redirect("/home.html");
                     }
                     return "";
@@ -153,7 +151,6 @@ public class Main {
                     String loginName = session.attribute("userName");
                     String post = request.queryParams("post");
                     userAccounts.get(loginName).getPosts().remove(post);
-                    System.out.println(post);
                     jasonWrite();
                     response.redirect("/home.html");
                     return "";
@@ -167,7 +164,6 @@ public class Main {
                     String post = request.queryParams("editPost");
                     String oldPost = request.queryParams("oldPost");
                     userAccounts.get(loginName).getPosts().set(userAccounts.get(loginName).getPosts().indexOf(oldPost), post);
-                    System.out.println("Edit post: " + post);
                     jasonWrite();
                     response.redirect("/home.html");
                     return "";
@@ -193,18 +189,10 @@ public class Main {
         fw = new FileWriter(f);
 
         for(Map.Entry<String, User>entry: userAccounts.entrySet()){
-            System.out.println(entry.getValue());
             json = serializer.serialize(entry.getValue());
-            System.out.println(json);
             fw.append(json);
             fw.append("\n");
         }
-
-//        for (User user: userAccounts.values()){
-//            json = serializer.serialize(user);
-//            fw.append(json);
-//            fw.append("\n");
-//        }
         fw.close();
     }
 }
