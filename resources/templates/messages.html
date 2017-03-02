@@ -1,0 +1,43 @@
+<html>
+<body>
+
+<form action="/create-message" method="post">
+    <input type="text" maxlength="140" placeholder="Enter your text" name="messageText"/>
+    <button type ="send">Send</button>
+</form>
+
+
+
+
+
+
+
+
+
+</form>
+    <ol>
+    {{#messages}}
+    <li>{{.}}</li>
+    {{/messages}}
+    </ol>
+
+<form action="/edit" method="post">
+    <button type="edit">edit</button>
+</form>
+
+
+<form action="/delete" method="post">
+    <button type="delete">delete</button>
+</form>
+
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+
+
+
+
+
+</html>
