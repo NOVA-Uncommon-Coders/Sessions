@@ -1,0 +1,7 @@
+body{background-color: aquamarine;}
+nav {background: cyan; text-align: center;}
+nav ul{list-style: none;}
+nav ul li{display: inline;}
+h1.loginMessage {text-align: center;font-size: xx-large;}
+h1.smalljoke{text-align: center; font-size: xx-small; position: inherit; top: 20px}
+
