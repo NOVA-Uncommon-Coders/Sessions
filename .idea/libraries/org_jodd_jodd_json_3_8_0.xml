@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="org.jodd:jodd-json:3.8.0" type="repository">
+    <properties maven-id="org.jodd:jodd-json:3.8.0" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jodd/jodd-json/3.8.0/jodd-json-3.8.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jodd/jodd-bean/3.8.0/jodd-bean-3.8.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jodd/jodd-core/3.8.0/jodd-core-3.8.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

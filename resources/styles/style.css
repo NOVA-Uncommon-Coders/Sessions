@@ -49,6 +49,7 @@ nav {
 
 h1,h2{
     color:#fff;
+    text-align: center;
 }
 
 
@@ -65,4 +66,14 @@ nav a.selected, nav a:hover{
 
 .post-button{
     display:inline-block;
+}
+h4{
+    color:#42f459;
+    font-weight: 800;
+    padding: 15px 10px;
+
+}
+b{
+    color:#2dffdf;
+    font-weight:700;
 }

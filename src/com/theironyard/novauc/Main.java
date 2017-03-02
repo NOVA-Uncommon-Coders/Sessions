@@ -1,5 +1,7 @@
 package com.theironyard.novauc;
 
+import jodd.json.JsonParser;
+import jodd.json.JsonSerializer;
 import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
@@ -7,16 +9,21 @@ import spark.template.mustache.MustacheTemplateEngine;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     public static HashMap<String, User> userAccounts = new HashMap<>();
     public static boolean loggedIn = false;
     public static File f = new File("post.json");
     public static FileWriter fw;
+    public static Scanner scanner;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        jasonRead();
         Spark.staticFileLocation("/styles");
         Spark.init();
         Spark.get(
@@ -35,7 +42,7 @@ public class Main {
                     String loginName = session.attribute("userName");
                     if (loggedIn) {
                         HashMap<String, ArrayList<String>> m= new HashMap();
-                        m.put("post", userAccounts.get(loginName).posts);
+                        m.put("post", userAccounts.get(loginName).getPosts());
                         return new ModelAndView(m, "home.html");
                     } else {
                         return new ModelAndView(userAccounts, "index.html");
@@ -62,9 +69,9 @@ public class Main {
                     String post = "";
                     HashMap<String, String>m = new HashMap<>();
                     for(User user: userAccounts.values()){
-                        post += String.format("<h4>%s</h4>", user.getName());
+                        post += String.format("<hr/><h4>Post by: <b>%s</b></h4>", user.getName());
                         int i = 1;
-                        for(String message: user.posts){
+                        for(String message: user.getPosts()){
                             post+= String.format("<p>%s] %s</p>",i ,message );
                             i++;
                         }
@@ -130,8 +137,10 @@ public class Main {
                     if (post.length() > 140 || post.equals("")){
                         response.redirect("/home.html");
                     } else {
-                        userAccounts.get(loginName).posts.add(post);
-                        //userAccounts.get(loginName).addPost(post);
+                        userAccounts.get(loginName).getPosts().add(post);
+                        System.out.println("Made it this far");
+                        jasonWrite();
+                        System.out.println("Even further");
                         response.redirect("/home.html");
                     }
                     return "";
@@ -143,8 +152,9 @@ public class Main {
                     Session session = request.session();
                     String loginName = session.attribute("userName");
                     String post = request.queryParams("post");
-                    userAccounts.get(loginName).posts.remove(post);
+                    userAccounts.get(loginName).getPosts().remove(post);
                     System.out.println(post);
+                    jasonWrite();
                     response.redirect("/home.html");
                     return "";
                 })
@@ -156,17 +166,45 @@ public class Main {
                     String loginName = session.attribute("userName");
                     String post = request.queryParams("editPost");
                     String oldPost = request.queryParams("oldPost");
-                    userAccounts.get(loginName).posts.set(userAccounts.get(loginName).posts.indexOf(oldPost), post);
+                    userAccounts.get(loginName).getPosts().set(userAccounts.get(loginName).getPosts().indexOf(oldPost), post);
                     System.out.println("Edit post: " + post);
+                    jasonWrite();
                     response.redirect("/home.html");
                     return "";
                 })
         );
     }
-    public void jasonRead() {
+    public static void jasonRead() throws IOException{
+         scanner = new Scanner(f);
+         scanner.useDelimiter("\n");
+         JsonParser parser = new JsonParser();
+         String contents;
+         while(scanner.hasNext()){
+             contents = scanner.next();
+             User user = parser.parse(contents, User.class);
+             userAccounts.put(user.getName(), user);
+         }
 
     }
-    public void jasonWrite(){
+    public static void jasonWrite() throws IOException{
+        String json;
+        JsonSerializer serializer = new JsonSerializer();
+        serializer.include("posts");
+        fw = new FileWriter(f);
 
+        for(Map.Entry<String, User>entry: userAccounts.entrySet()){
+            System.out.println(entry.getValue());
+            json = serializer.serialize(entry.getValue());
+            System.out.println(json);
+            fw.append(json);
+            fw.append("\n");
+        }
+
+//        for (User user: userAccounts.values()){
+//            json = serializer.serialize(user);
+//            fw.append(json);
+//            fw.append("\n");
+//        }
+        fw.close();
     }
 }
