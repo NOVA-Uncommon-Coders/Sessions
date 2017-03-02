@@ -17,6 +17,8 @@ public class Main {
     static HashMap<String,User> users = new HashMap<>();
 
     public static void main(String[] args) {
+        Spark.staticFileLocation("/templates");
+        Spark.init();
 
         /**
          * index and message .html
@@ -57,16 +59,18 @@ public class Main {
 //                    Session session = request.session();
 //                    String name = session.attribute("userName");
 //                    User user = users.get(name);
-                    //this catches an empty username box to prompt them into the create menu
-                    //the next few blocks are ment as catchers for the incorrect login scenerio
-                    if (!users.containsKey(loginName)) {
-                        response.redirect("/login");
-                    }
+//                    //this catches an empty username box to prompt them into the create menu
+//                    //the next few blocks are ment as catchers for the incorrect login scenerio
+//                    if (user==null) {
+//                        response.redirect("/login");
+//                    }
                     if (user.getUserName().equalsIgnoreCase(loginName) && !user.getPassword().equals(password)) {
                         response.redirect("/wrong-pass");
+                        return"";
                     }
                     if (!user.getUserName().equalsIgnoreCase(loginName)) {
                         response.redirect("/wrong-pass");
+                        return "";
                     }
                     if (user.getUserName().equalsIgnoreCase(loginName) && user.getPassword().equals(password)) {
                         //this is the block to start a session//place the attribute into the hashmap later on
