@@ -1,0 +1,28 @@
+<html>
+<body>
+{{messages}} {{text}}
+Welcome,{{name}}
+<form action="\logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<form action="/create-message" method="post" >
+    <input type="text" placeholder="Type your message here" name="formMessage" width="200"/>
+    <button type="submit">Submit</button>
+</form>
+<form action="/create-message" method="post">
+    <input type="text"placeholder="Message#" name="formDelete" width="200"/>
+    <input type="number" name="formDelete" min="1" max="5">
+    <button type="delete">Delete</button>
+</form>
+<form action="/create-message" method="post">
+    <input type="text" placeholder="Message#" name="formEdit" width="200"/>
+    <input type="text" placeholder="Edit message" name="formEdit" width="200"/>
+    <input type="number" name="formEdit" min="1" max="5">
+    <button type="edit">Edit</button>
+
+</form>
+
+</body>
+
+
+</html>
