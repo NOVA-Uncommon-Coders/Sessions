@@ -71,7 +71,8 @@ public class Main {
             Session session = request.session();
             String name = session.attribute("userName");
             String something = request.queryParams("deleteMessage");
-            //userAccess.remove(name, handwritten);
+            userAccess.get(name).getAvector().remove((Integer.valueOf(something) -1));
+            response.redirect("/");
             return "";
         }));
 

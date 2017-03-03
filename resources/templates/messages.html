@@ -8,11 +8,6 @@
 <form action="/create-message" method="post">
     <input type="text" placeholder="express your feelings" name="createMessage"/>
     <button type="submit">Submit</button>
-    <ol>
-    {{#aVector}}
-    <li>{{.}}</li>
-    {{/aVector}}
-    </ol>
 
 </form>
 
@@ -25,10 +20,15 @@
 </form>
 
 <form action="/delete-message" method="post">
-    <input type="text" placeholder="message #" name="deleteMessage"/>
+    <input type="number" placeholder="message #" name="deleteMessage"/>
     <button type="submit">Deleterious</button>
 </form>
 
+<ol>
+    {{#aVector}}
+    <li>{{.}}</li>
+    {{/aVector}}
+</ol>
 
 
 </body>
