@@ -21,7 +21,6 @@ public class Main {
                     HashMap hashLocal = new HashMap();
 
 
-                    System.out.println("fresh page");
                     if(!userAccess.containsKey(name)) {
                         return new ModelAndView(hashLocal, "index.html");
                     } else {
@@ -33,7 +32,6 @@ public class Main {
         );
 
         Spark.post("/create-user", ((request, response) -> {
-                    System.out.println("accessed create user");
                     String nomDeGuerre = request.queryParams("createUser");
                     String password = request.queryParams("createPassword");
 
@@ -43,9 +41,7 @@ public class Main {
 
                     if (userAccess.containsKey(nomDeGuerre)) {
                         if (userAccess.get(nomDeGuerre).getPassword().equals(password)) {
-                            System.out.println("password good, redirecting");
                             session.attribute("userName", nomDeGuerre);
-                            //response.redirect("/");
                         }
                     }else{
                         session.attribute("userName", nomDeGuerre);
@@ -59,7 +55,6 @@ public class Main {
         Spark.post("/create-message", (((request, response) -> {
                     Session session = request.session();
                     String name = session.attribute("userName");
-                    System.out.println("accessed create message");
                     String handwritten = request.queryParams("createMessage");
                     userAccess.get(name).getAvector().add(handwritten);
                     response.redirect("/");
@@ -67,11 +62,21 @@ public class Main {
                 }))
         );
 
+        Spark.post("/edit-message", ((request, response) -> {
+            Session session = request.session();
+            String name = session.attribute("userName");
+            String editText = request.queryParams("editMessageT");
+            String editNumber = request.queryParams("editMessageN");
+            userAccess.get(name).getAvector().set((Integer.valueOf(editNumber)-1), editText );
+            response.redirect("/");
+            return "";
+        }));
+
         Spark.post("/delete-message", ((request, response) -> {
             Session session = request.session();
             String name = session.attribute("userName");
-            String something = request.queryParams("deleteMessage");
-            userAccess.get(name).getAvector().remove((Integer.valueOf(something) -1));
+            String deleteRequest = request.queryParams("deleteMessage");
+            userAccess.get(name).getAvector().remove((Integer.valueOf(deleteRequest) -1));
             response.redirect("/");
             return "";
         }));
