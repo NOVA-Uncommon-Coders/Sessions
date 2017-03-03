@@ -4,6 +4,7 @@
 <form action="/logout" method="post">
     <button type="logout">Logout</button>
 </form>
+
 <form action="/create-message" method="post">
     <input type="text" placeholder="express your feelings" name="createMessage"/>
     <button type="submit">Submit</button>
@@ -15,6 +16,20 @@
 
 </form>
 
-<form action="/delete-message"
+<form action="/edit-message" method="post">
+    <input type="text" placeholder="message #" name="editMessage"/>
+    <input type="text" placeholder="edit your feelings" name="editMessage"/>
+    <button type="submit">Submit</button>
+
+
+</form>
+
+<form action="/delete-message" method="post">
+    <input type="text" placeholder="message #" name="deleteMessage"/>
+    <button type="submit">Deleterious</button>
+</form>
+
+
+
 </body>
 </html>
