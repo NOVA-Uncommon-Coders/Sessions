@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/html">
+<body>
+Welcome,{{name}}!
+
+<form action="\logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<br>
+<form action="/create-message" method="post" >
+    <input type="text" placeholder="Type your message here" name="messageText" width="200"/>
+    <button type="submit">Post Message</button>
+</form>
+<br>
+
+    <form action="/delete" method="post">
+        <input type="text" placeholder="Message#" name="deleteMessage"/>
+        <button type="submit">Delete</button><br>
+    </form>
+<br>
+<form action="/edit-message" method="post">
+    <input type="text" placeholder="Message#" name="updateMessage"/>
+    <input type="text" placeholder="Edit Message" name="editMessage"/>
+    <button type="submit">Edit</button>
+
+</form>
+
+<ol>
+    {{#messages}}
+    <li> {{text}}</li>
+     {{/messages}}
+
+</ol>
+
+
+
+</body>
+
+
+</html>
