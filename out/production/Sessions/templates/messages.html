@@ -1,0 +1,35 @@
+<html>
+<body>
+{{name}}
+<form action="/logout" method="post">
+    <button type="logout">Logout</button>
+</form>
+
+<form action="/create-message" method="post">
+    <input type="text" placeholder="express your feelings" name="createMessage"/>
+    <button type="submit">Submit</button>
+
+</form>
+
+<form action="/edit-message" method="post">
+    <input type="number" placeholder="message #" name="editMessageN"/>
+    <input type="text" placeholder="edit your feelings" name="editMessageT"/>
+    <button type="submit">Submit</button>
+
+
+</form>
+
+<form action="/delete-message" method="post">
+    <input type="number" placeholder="message #" name="deleteMessage"/>
+    <button type="submit">Delete</button>
+</form>
+
+<ol>
+    {{#aVector}}
+    <li>{{.}}</li>
+    {{/aVector}}
+</ol>
+
+
+</body>
+</html>
