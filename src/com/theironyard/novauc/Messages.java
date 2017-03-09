@@ -1,17 +1,24 @@
 package com.theironyard.novauc;
 
-/**
- * Created by souporman on 3/1/17.
- */
+
 public class Messages {
+    int id;
     String post;
     String creator;
-    String createdDate;
 
-    public Messages(String post, String creator, String createdDate) {
+    public Messages(int id,String post, String creator) {
+        this.id =id;
         this.post = post;
         this.creator = creator;
-        this.createdDate = createdDate;
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPost() {
@@ -30,11 +37,4 @@ public class Messages {
         this.creator = creator;
     }
 
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
 }

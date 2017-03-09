@@ -2,12 +2,10 @@ package com.theironyard.novauc;
 
 import java.util.ArrayList;
 
-/**
- * Created by souporman on 3/1/17.
- */
 public class User {
-    private String userName;
-    private String password;
+    int id;
+    String userName;
+    String password;
 
     ArrayList<Messages> posts = new ArrayList<>();
 
@@ -35,7 +33,8 @@ public class User {
         this.posts = posts;
     }
 
-    public User(String username, String password){
+    public User(int id,String username, String password){
+        this.id=id;
         this.userName=username;
         this.password=password;
     }

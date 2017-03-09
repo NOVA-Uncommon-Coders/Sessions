@@ -25,10 +25,10 @@
     <button type="submit">Submit</button>
 </form>
 
-<ol>
-    {{#posts}}
-    <li>{{post}} - made by {{userName}} created {{createdDate}} minutes ago <form action="/deletePost" method="post"><select name="postdelete"><option selected disabled>Interact with this</option><option value="delete">Delete this post</option><option value="reply">Reply to post</option></select><button type="submit">Submit</button></form></li>
-    {{/posts}}
-</ol>
+<ul>
+    {{#messages}}
+    <li>{{post}} - made by {{creator}} <form action="/delete-entry" method="post"><input type="hidden" value="{{id}}" name="postId"><<button type="submit" name="delete">delete</button></form></li>
+    {{/messages}}
+</ul>
 </body>
 </html>
