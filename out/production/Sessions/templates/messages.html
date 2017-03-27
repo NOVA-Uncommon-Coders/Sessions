@@ -1,0 +1,37 @@
+<html>
+<body>
+
+<!--<form action="/create-user" method="post">-->
+    <!--<input type="text" placeholder="Enter your name" name="LoginName"/>-->
+    <!--<input type="text" placeholder="Password:" name="LoginPassword"/>-->
+    <!--<button type ="submit">Login</button>-->
+
+<form action="/create-message" method="post">
+    <input type="text" maxlength="140" placeholder="Enter your text" name="messageText"/>
+    <button type ="send">Send</button>
+</form>
+
+{{#messages}}
+    <ol>
+        <li>{{.}}</li>
+        <form action="/delete-messages" method="post">
+            <input type="hidden" value="{{.}}" name="deleteMessage">
+            <button type ="submit">delete</button>
+        </form>
+        <form action="/edit-messages" method="post">
+            <input type="hidden" value="{{.}}"name="oldMessage">
+            <input type="text" value="{{.}}" name= "newMessage">
+            <button type ="submit">edit</button>
+        </form>
+    </ol>
+{{/messages}}
+
+
+
+
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>
