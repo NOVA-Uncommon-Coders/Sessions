@@ -23,8 +23,6 @@ public class Main {
             String userName = session.attribute("userName");
             User user = users.get(userName);
 
-
-
             if(user == null){
                 return new ModelAndView(m, "index.html");
             } else {
@@ -40,20 +38,20 @@ public class Main {
         Spark.post("/create-user",
                 ((request, response) -> {
 
-            String name = request.queryParams("LoginName");
-            Session session = request.session();
+        String name = request.queryParams("LoginName");
+        Session session = request.session();
 
 
-            String password = request.queryParams("LoginPassword");
+        String password = request.queryParams("LoginPassword");
 
-                    if (!users.containsKey(name)){
+                if (!users.containsKey(name)){
+                    session.attribute("userName", name);
+                    users.put(name, new User(name, password));
+                } else {
+                    if(users.get(name).password.equals(password)){
                         session.attribute("userName", name);
-                        users.put(name, new User(name, password));
-                    } else {
-                        if(users.get(name).password.equals(password)){
-                            session.attribute("userName", name);
-                        }
                     }
+                }
 
             response.redirect("/");
             return "Welcome!";
@@ -76,17 +74,47 @@ public class Main {
         })
         );
 
-        Spark.post("/logout", ((request, response) -> {
-
+        Spark.post("/delete-messages", ((request, response) -> {
             Session session = request.session();
-            session.invalidate();
+            String userName = session.attribute("userName");
+
+            String message = request.queryParams("deleteMessage");
+            users.get(userName).userMessages.remove(message);
+
             response.redirect("/");
             return "";
+
+
         })
         );
 
-    }
+        Spark.post("/edit-messages", ((request, response) -> {
+            Session session = request.session();
+            String userName = session.attribute("userName");
+            String message = request.queryParams("newMessage");
+            String old = request.queryParams("oldMessage");
+            int i = users.get(userName).userMessages.indexOf(old);
+            users.get(userName).userMessages.set(i, message);
+
+
+            response.redirect("/");
+            return "";
+
+        })
+        );
+
+
+            Spark.post("/logout", ((request, response) -> {
+
+                        Session session = request.session();
+                        session.invalidate();
+                        response.redirect("/");
+                        return "";
+                    })
+            );
+        }
 }
+
 
 
 

@@ -9,7 +9,7 @@ public class User {
 
     String name;
     String password;
-    ArrayList userMessages = new ArrayList();
+    ArrayList <String> userMessages = new ArrayList();
 
 
     public String getName() {
