@@ -1,4 +1,5 @@
 package com.theironyard.novauc;
+
 import spark.ModelAndView;
 import spark.Session;
 import spark.Spark;
@@ -19,13 +20,6 @@ public class Main {
                 ((request, response) -> {
                     HashMap log = new HashMap<>();
                     return new ModelAndView(log, "login.html");
-//                    else {
-//                        log.put("name", user.name);
-//                        log.put("password", user.password);
-//                        log.put("message", user.messageList);
-//                        Session session = request.session();
-//                        return new ModelAndView(log, "/messages");
-//                    }
                 }
                 ), new MustacheTemplateEngine()
         );
@@ -42,27 +36,27 @@ public class Main {
                     log.put("name", user.name);
                     log.put("password", user.password);
                     log.put("message", user.messageList);
-            return new ModelAndView(log, "messages.html");
-        }), new MustacheTemplateEngine()
+                    return new ModelAndView(log, "messages.html");
+                }), new MustacheTemplateEngine()
         );
 
 
-        Spark.post("/login",((request, response) -> {
-                //I want this route to handle:
-                //query the user for their credentials
-                //if a valid user and password are entered correctly, create a session then reroute them to messages.html.
-                //if they are a returning
-                String name = request.queryParams("user");
-                String password = request.queryParams("password");
-                User user = usersList.get(name);
-                if(password.equals(user.password)) {
-                    Session session = request.session();
-                    session.attribute("user", name);
-                    response.redirect("/messages");
-                }
-            return null;
-            }
-                ));
+        Spark.post("/login", ((request, response) -> {
+                    //I want this route to handle:
+                    //query the user for their credentials
+                    //if a valid user and password are entered correctly, create a session then reroute them to messages.html.
+                    //if they are a returning
+                    String name = request.queryParams("user");
+                    String password = request.queryParams("password");
+                    User user = usersList.get(name);
+                    if (password.equals(user.password)) {
+                        Session session = request.session();
+                        session.attribute("user", name);
+                        response.redirect("/home");
+                    }
+                    return null;
+                })
+        );
 
         Spark.post("/create-user",
                 ((request, response) -> {
@@ -76,7 +70,8 @@ public class Main {
                     return "";
 
                 }
-                ));
+                )
+        );
 
         Spark.post("/create-message",
                 ((request, response) -> {
@@ -106,28 +101,30 @@ public class Main {
 
         Spark.post("/logout",
                 ((request, response) -> {
-                   Session session = request.session();
+                    Session session = request.session();
                     session.invalidate();
                     response.redirect("/");
                     return "";
 
 
-                }));
+                })
+        );
 
         Spark.post("/delete", ((request, response) -> {
 
-            Session session = request.session();
-            String name = session.attribute("user");
-            User user = usersList.get(name);
-            String m = request.queryParams("delete");
-            int i = Integer.parseInt(m) - 1;   //i converted a string to an integer here so i could delete the message
+                    Session session = request.session();
+                    String name = session.attribute("user");
+                    User user = usersList.get(name);
+
+                    String m = request.queryParams("delete");
+                    int i = Integer.parseInt(m) - 1;   //i converted a string to an integer here so i could delete the message
                     user.messageList.remove(i);
-            //send user back to /messages
-            response.redirect("/messages");
-            return "";
+                    //send user back to /messages
+                    response.redirect("/messages");
+                    return "";
 
 
-        })
+                })
         );
 
     }
