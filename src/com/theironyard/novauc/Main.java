@@ -23,16 +23,13 @@ public class Main {
         stmt.execute("CREATE TABLE IF NOT EXISTS posts (id IDENTITY, postId INT, text VARCHAR, user_name VARCHAR)");
     }
 
-//    public static int lengthOfTable(Connection conn, String currentUser) throws SQLException{
-//        int id=1;
-//        PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM posts INNER JOIN users ON posts.user_name = users.user_name WHERE users.user_name = ?");
-//        stmt.setString(1, currentUser);
-//        ResultSet results = stmt.executeQuery();
-//        if (results.next()) {
-//            id = results.getInt("COUNT(*)")+1;
-//        }
-//        return id;
-//    }
+    public static void updateMessage(Connection conn, int number, String newpost) throws SQLException{
+        PreparedStatement stmt = conn.prepareStatement("UPDATE posts SET text = ? WHERE id = ?");
+        stmt.setString(1,newpost);
+        stmt.setInt(2, number);
+        stmt.execute();
+    }
+
 
     public static void insertUser(Connection conn, String name, String password) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO users VALUES (NULL, ?, ?)");
@@ -129,7 +126,15 @@ public class Main {
                 })
         );
 
-
+        Spark.post("/updateMessage",
+                (((request, response) -> {
+               int number = Integer.valueOf(request.queryParams("number")) ;
+              String post = request.queryParams("post");
+              updateMessage(conn,number,post);
+              response.redirect("/");
+              return "";
+                }))
+               );
 
         Spark.post("/delete-entry",
                 (((request, response) -> {
