@@ -49,6 +49,7 @@ public class Main {
         }
         return null;
     }
+
     public static boolean userNameInUse(Connection conn, String name)throws SQLException{
         boolean thereIsAlready=false;
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE user_name = ?");
@@ -72,6 +73,13 @@ public class Main {
         stmt.execute();
     }
 
+    public static void updateMessage(Connection conn, int editNum, String newMessage) throws SQLException{
+        PreparedStatement stmt = conn.prepareStatement("UPDATE messages SET text = ? WHERE id = ?");
+        stmt.setString(1,newMessage);
+        stmt.setInt(2, editNum);
+        stmt.execute();
+    }
+
     public static Messages selectMessage(Connection conn, int id) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM messages INNER JOIN users ON messages.user_name = users.user_name WHERE messages.id = ?");
         stmt.setInt(1, id);
@@ -85,7 +93,7 @@ public class Main {
     }
 
     public static void deleteMessage(Connection conn,int id) throws SQLException{
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM messages WHERE messages.id = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM messages WHERE id = ?");
         stmt.setInt(1, id);
         stmt.execute();
     }
@@ -104,6 +112,7 @@ public class Main {
         }
         return messages;
     }
+
 //
 //    public static ArrayList<Messages> selectReplies(Connection conn, int replyId) throws SQLException {
 //        ArrayList<Messages> messages = new ArrayList<>();
@@ -181,15 +190,24 @@ public class Main {
                         response.redirect("/");
                         return "";
                     }
-                    response.redirect("/login");
+                    response.redirect("/");
                     return "";
                 })
         );
 
         Spark.post("/delete-entry",
                 (((request, response) -> {
-                    int someId = Integer.valueOf(request.queryParams("postId")) ;
+                    //int someId = Integer.valueOf(request.queryParams("postId")) ;
                     deleteMessage(conn,Integer.valueOf(request.queryParams("postId")));
+                    response.redirect("/");
+                    return "";
+                }))
+                );
+        Spark.post("/edit-message",
+                (((request, response) -> {
+                    int messagePointer =Integer.valueOf(request.queryParams("editNumber")) ;
+                    String newMessage = request.queryParams("editedMessage");
+                    updateMessage(conn,messagePointer,newMessage);
                     response.redirect("/");
                     return "";
                 }))
@@ -244,6 +262,7 @@ public class Main {
                     return "";
                 })
                 );
+
 //        Spark.get("/?editId={{id}}",
 //                ((request, response) -> {
 //                    Session session=request.session();

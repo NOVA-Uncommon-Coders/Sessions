@@ -25,10 +25,21 @@
     <button type="submit">Submit</button>
 </form>
 
-<ul>
+<br/>
+<br/>
+<form action="/edit-message" method="post">
+    <input type="number" placeholder="which post would you like to update" name="editNumber">
+    <input type="text" placeholder="What is the new borg you would like to submit" name="editedMessage">
+    <button type="submit">Edit</button>
+</form>
+<br/>
+<br/>
+
+
+<ol>
     {{#messages}}
-    <li>{{post}} - made by {{creator}} <form action="/delete-entry" method="post"><input type="hidden" value="{{id}}" name="postId"><<button type="submit" name="delete">delete</button></form></li>
+    <li>{{creator}} - made by {{post}} id# {{id}} <form action="/delete-entry" method="post"><input type="hidden" value="{{id}}" name="postId"><<button type="submit" name="delete">delete</button></form></li>
     {{/messages}}
-</ul>
+</ol>
 </body>
 </html>
