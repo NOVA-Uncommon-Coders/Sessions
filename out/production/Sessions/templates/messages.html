@@ -1,0 +1,45 @@
+<html>
+<head>
+    <link href="homepage.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav>
+    <h1 class="loginMessage">Welcome to borf</h1>
+    <h1 class="smalljoke">powered by rettiwt</h1>
+    <ul class="topBar">
+        <li>
+            <a title="logout" href="logout.html">Logout</a>
+        </li>
+        <li>
+            <a title="viewProfile" href="viewProfile.html">View my profile page</a>
+        </li>
+    </ul>
+</nav>
+
+<form action="/" method="post">
+        BLOG ABOUT YOURSELF
+</form>
+
+<form action="/create-message" method="post">
+    <input type="text" placeholder="Tell the world your borf" name="blogPost" width="1000"/>
+    <button type="submit">Submit</button>
+</form>
+
+<br/>
+<br/>
+<form action="/edit-message" method="post">
+    <input type="number" placeholder="which post would you like to update" name="editNumber">
+    <input type="text" placeholder="What is the new borg you would like to submit" name="editedMessage">
+    <button type="submit">Edit</button>
+</form>
+<br/>
+<br/>
+
+
+<ol>
+    {{#messages}}
+    <li>{{creator}} - made by {{post}} id# {{id}} <form action="/delete-entry" method="post"><input type="hidden" value="{{id}}" name="postId"><<button type="submit" name="delete">delete</button></form></li>
+    {{/messages}}
+</ol>
+</body>
+</html>
