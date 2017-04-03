@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/logout" method="post">
+    <button type="submit">logout</button>
+</form>
+<form action="/create-message" method="post">
+    <input type="text" name="blogPost" />
+    <button type="submit">Submit</button>
+</form>
+<form action="/update-message" method="post">
+    <input type="text" name="number" />
+    <input type="text" name="post" />
+    <button type="submit">update</button>
+</form>
+
+<form action="/delete-entry" method="post">
+    <input type="text" placeholder="# to delete" name="postId">
+    <button type="submit" name="delete">delete</button>
+</form>
+<ul>
+    {{#posts}}
+    <li>{{poster}} - made by {{post}} this is idnumber {{id}}</li>
+    {{/posts}}
+</ul>
+</body>
+</html>

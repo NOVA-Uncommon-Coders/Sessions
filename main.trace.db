@@ -1,0 +1,3 @@
+2017-03-27 16:53:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "POSTS" not found; SQL statement:
+SELECT COUNT(*) FROM posts INNER JOIN users ON posts.user_name = users.user_name WHERE users.user_name = ? [42102-191]
