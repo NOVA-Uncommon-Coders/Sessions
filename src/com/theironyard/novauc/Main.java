@@ -24,7 +24,7 @@ public class Main {
     }
 
     public static void updateMessage(Connection conn, int number, String newpost) throws SQLException{
-        PreparedStatement stmt = conn.prepareStatement("UPDATE posts SET text = ? WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("UPDATE posts SET text = ? WHERE postId = ?");
         stmt.setString(1,newpost);
         stmt.setInt(2, number);
         stmt.execute();
@@ -126,7 +126,7 @@ public class Main {
                 })
         );
 
-        Spark.post("/updateMessage",
+        Spark.post("/update-message",
                 (((request, response) -> {
                int number = Integer.valueOf(request.queryParams("number")) ;
               String post = request.queryParams("post");
