@@ -12,7 +12,7 @@ public class Main {
 
     static HashMap<String, User> usersList = new HashMap<>(); //when the instructions asked for a String, did it mean it wanted "asdf" or actually the String type?
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         Spark.init();
 
@@ -26,34 +26,42 @@ public class Main {
 
         Spark.get("/messages",
                 ((request, response) -> {
-
-                    Session session = request.session();
-                    String name = session.attribute("user");
-                    System.out.println(name);
-                    User user = usersList.get(name);
-
                     HashMap log = new HashMap<>();
-                    log.put("name", user.name);
-                    log.put("password", user.password);
-                    log.put("message", user.messageList);
+                    Session session = request.session();
+                    User user = session.attribute("user");
+
+                    if(user == null){
+                        response.redirect("/");
+                    }else {
+                        log.put("name", user.name);
+                        log.put("password", user.password);
+                        log.put("message", user.messageList);
+                    }
+
+
                     return new ModelAndView(log, "messages.html");
                 }), new MustacheTemplateEngine()
         );
 
-
+//gettinga 500 error when I log in.  I get a null pointer exception (does that mean i have to put "throws exception somewhere?)
         Spark.post("/login", ((request, response) -> {
-                    //I want this route to handle:
-                    //query the user for their credentials
-                    //if a valid user and password are entered correctly, create a session then reroute them to messages.html.
-                    //if they are a returning
-                    String name = request.queryParams("user");
-                    String password = request.queryParams("password");
-                    User user = usersList.get(name);
-                    if (password.equals(user.password)) {
-                        Session session = request.session();
-                        session.attribute("user", name);
-                        response.redirect("/home");
-                    }
+            String name = request.queryParams("user");
+            String password = request.queryParams("password");
+            User user = usersList.get(name);
+            if (user == null) {
+                user = new User(name, password, new ArrayList<Message>()); //created a new user
+                usersList.put(name, user); // do i need to put password here too?
+                Session session = request.session();
+                session.attribute("user", user);
+                response.redirect("/messages");
+            }else if (password.equals(user.password)) {
+                Session session = request.session();
+                session.attribute("user", user);
+                response.redirect("/messages");
+            }
+            else {
+                response.redirect("/");
+        }
                     return null;
                 })
         );
