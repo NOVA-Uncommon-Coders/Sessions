@@ -72,8 +72,8 @@ public class Main {
                     String password = request.queryParams("password");
                     User user = new User(name, password, new ArrayList<Message>());
                     usersList.put(name, user);
-                    Session session = request.session();
-                    session.attribute("user", name);
+//                    Session session = request.session();
+//                    session.attribute("user", name);
                     response.redirect("/messages");
                     return "";
 
@@ -86,9 +86,9 @@ public class Main {
                     //get session out of request
                     Session session = request.session();
                     //get 'user' attribute from session that we stored earlier (in either /login or /create-user)
-                    String name = session.attribute("user");
+                    User tempUser = session.attribute("user");
                     //get user object from the userslist hashmap using 'name' as the key
-                    User user = usersList.get(name);
+                    User user = usersList.get(tempUser.name);
 
 
                     //get the text of our message from the request parameters
@@ -121,8 +121,8 @@ public class Main {
         Spark.post("/delete", ((request, response) -> {
 
                     Session session = request.session();
-                    String name = session.attribute("user");
-                    User user = usersList.get(name);
+                    User tempUser = session.attribute("user");
+                    User user = usersList.get(tempUser.name);
 
                     String m = request.queryParams("delete");
                     int i = Integer.parseInt(m) - 1;   //i converted a string to an integer here so i could delete the message
