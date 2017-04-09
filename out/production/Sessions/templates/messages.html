@@ -5,26 +5,26 @@
     <button type="submit">Submit</button>
 </form>
 
-<form action="/deleteMessage" method="post">
-    <input type="text" placeholder="Message #" name="deleteMessage"/>
+<form action="/delete-Message" method="post">
+    <input type="number" placeholder="#" name="ID"/>
     <button type="submit">Delete</button>
 </form>
 
 <form action="/editMessage" method="post">
-    <input type="text" placeholder="Message #" name="messageNumber"/>
-    <input type="text" placeholder="Edit Message" name="editMessage"/>
+    <input type="number" placeholder="#" name="messageID"/>
+    <input type="text" name="newMessage"/>
     <button type="Edit">Edit</button>
 
 </form>
-
-
 <p>Messages by {{name}}:
 <ol>
-    {{mess}}
+    {{#m}}
     <li>{{ymessage}}</li>
-    {{/mess}}
+    {{/m}}
 </ol>
 </p>
+
+
 </body>
 </html>
 
